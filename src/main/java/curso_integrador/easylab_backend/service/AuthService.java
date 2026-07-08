@@ -23,9 +23,10 @@ public class AuthService {
 
     /** Mapeo: nombre del tab en el frontend → nombre del rol en la BD */
     private static final Map<String, String> TAB_TO_ROL = Map.of(
-            "Paciente",  "PACIENTE",
-            "Médico",    "MEDICO",
-            "Recepción", "RECEPCION"
+            "Administración", "ADMIN",
+            "Médico",         "MEDICO",
+            "Recepción",      "RECEPCION",
+            "Paciente",       "PACIENTE"
     );
 
     private final UsuarioRepository usuarioRepository;
