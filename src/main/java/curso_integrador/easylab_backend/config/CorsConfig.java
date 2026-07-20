@@ -20,11 +20,18 @@ public class CorsConfig {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of(
-                "http://localhost:5173",
-                "http://localhost:5174",
-                "http://localhost:3000"
-        ));
+        
+        // Leer orígenes desde la variable de entorno, o usar los locales por defecto
+        String allowedOrigins = System.getenv("ALLOWED_ORIGINS");
+        if (allowedOrigins != null && !allowedOrigins.isEmpty()) {
+            config.setAllowedOrigins(java.util.Arrays.asList(allowedOrigins.split(",")));
+        } else {
+            config.setAllowedOrigins(List.of(
+                    "http://localhost:5173",
+                    "http://localhost:5174",
+                    "http://localhost:3000"
+            ));
+        }
 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));

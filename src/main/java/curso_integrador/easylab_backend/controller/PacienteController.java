@@ -1,6 +1,7 @@
 package curso_integrador.easylab_backend.controller;
 
 import curso_integrador.easylab_backend.dto.PacienteDTO;
+import curso_integrador.easylab_backend.dto.PruebaResponse;
 import curso_integrador.easylab_backend.service.PacienteService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +13,10 @@ import java.util.Map;
  * REST Controller for Paciente operations.
  *
  * Endpoints:
- *   GET  /api/pacientes          → List all patients
- *   GET  /api/pacientes/dni/{dni} → Find patient by DNI
- *   POST /api/pacientes          → Register a new patient
+ *   GET  /api/pacientes                 → List all patients
+ *   GET  /api/pacientes/dni/{dni}        → Find patient by DNI
+ *   POST /api/pacientes                 → Register a new patient
+ *   GET  /api/pacientes/mis-indicaciones → List test indications for authenticated patient
  */
 @RestController
 @RequestMapping("/api/pacientes")
@@ -47,5 +49,10 @@ public class PacienteController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", e.getMessage()));
         }
+    }
+
+    @GetMapping("/mis-indicaciones")
+    public ResponseEntity<List<PruebaResponse>> misIndicaciones() {
+        return ResponseEntity.ok(pacienteService.misIndicaciones());
     }
 }
