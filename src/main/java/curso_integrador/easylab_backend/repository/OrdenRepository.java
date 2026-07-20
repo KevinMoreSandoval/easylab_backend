@@ -9,5 +9,6 @@ import java.util.List;
 public interface OrdenRepository extends JpaRepository<Orden, Long> {
     List<Orden> findAllByOrderByFechaEmisionDesc();
     List<Orden> findByEstado(String estado);
+    List<Orden> findByPacienteDniOrderByFechaEmisionDesc(String dni);
     long countByEstado(String estado);
 }

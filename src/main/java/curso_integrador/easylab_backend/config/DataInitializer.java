@@ -5,11 +5,13 @@ import curso_integrador.easylab_backend.model.Usuario;
 import curso_integrador.easylab_backend.model.PruebaLaboratorio;
 import curso_integrador.easylab_backend.model.Paciente;
 import curso_integrador.easylab_backend.model.Orden;
+import curso_integrador.easylab_backend.model.Cita;
 import curso_integrador.easylab_backend.repository.RolRepository;
 import curso_integrador.easylab_backend.repository.UsuarioRepository;
 import curso_integrador.easylab_backend.repository.PruebaRepository;
 import curso_integrador.easylab_backend.repository.PacienteRepository;
 import curso_integrador.easylab_backend.repository.OrdenRepository;
+import curso_integrador.easylab_backend.repository.CitaRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +36,7 @@ public class DataInitializer {
             PruebaRepository pruebaRepository,
             PacienteRepository pacienteRepository,
             OrdenRepository ordenRepository,
+            CitaRepository citaRepository,
             PasswordEncoder passwordEncoder
     ) {
         return args -> {
@@ -130,6 +133,23 @@ public class DataInitializer {
             o3.setEstado("ATENDIDA");
             o3.setPruebas(new HashSet<>(Arrays.asList(orina)));
             ordenRepository.save(o3);
+
+            // Citas de prueba
+            Cita c1 = new Cita();
+            c1.setPaciente(p1);
+            c1.setMedico(usrMedico);
+            c1.setFecha(LocalDate.now());
+            c1.setHora(java.time.LocalTime.of(9, 30));
+            c1.setEstado("PROGRAMADA");
+            citaRepository.save(c1);
+
+            Cita c2 = new Cita();
+            c2.setPaciente(p2);
+            c2.setMedico(usrMedico);
+            c2.setFecha(LocalDate.now());
+            c2.setHora(java.time.LocalTime.of(10, 0));
+            c2.setEstado("PROGRAMADA");
+            citaRepository.save(c2);
 
             System.out.println("✅ Datos iniciales insertados correctamente.");
             System.out.println("📋 Usuarios de prueba (contraseña: 123456):");

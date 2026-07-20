@@ -145,7 +145,7 @@ public class PruebaService {
     /**
      * Convierte entidad a DTO response.
      */
-    private PruebaResponse toResponse(PruebaLaboratorio entity) {
+    public PruebaResponse toResponse(PruebaLaboratorio entity) {
         PruebaResponse response = new PruebaResponse();
         response.setId(entity.getId());
         response.setNombre(entity.getNombre());

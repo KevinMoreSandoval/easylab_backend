@@ -88,6 +88,22 @@ public class OrdenService {
                 .collect(Collectors.toList());
     }
 
+    /** Get orders by patient DNI */
+    public List<OrdenResponse> findByPacienteDni(String dni) {
+        return ordenRepository.findByPacienteDniOrderByFechaEmisionDesc(dni)
+                .stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    /** Change order status */
+    public OrdenResponse cambiarEstado(Long id, String nuevoEstado) {
+        Orden orden = ordenRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Orden no encontrada con ID: " + id));
+        orden.setEstado(nuevoEstado);
+        return toResponse(ordenRepository.save(orden));
+    }
+
     private OrdenResponse toResponse(Orden o) {
         OrdenResponse r = new OrdenResponse();
         r.setId(o.getId());
