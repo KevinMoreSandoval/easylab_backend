@@ -7,7 +7,7 @@ package curso_integrador.easylab_backend.dto;
  */
 public class LoginRequest {
 
-    private String userType;     // "Paciente", "Médico", "Recepción"
+    private String userType;     // "Administración", "Médico", "Recepción"
     private String identifier;   // DNI, código colegiatura, o email
     private String password;
 

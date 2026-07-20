@@ -51,23 +51,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // 2. Extraer el token (sin el prefijo "Bearer ")
         String token = authHeader.substring(7);
 
-        // 3. Extraer el identificador del token
-        String identificador = jwtService.extractIdentificador(token);
+        try {
+            // 3. Extraer el identificador del token
+            String identificador = jwtService.extractIdentificador(token);
 
-        // 4. Si hay identificador y no hay autenticación previa, validar
-        if (identificador != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(identificador);
+            // 4. Si hay identificador y no hay autenticación previa, validar
+            if (identificador != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(identificador);
 
-            if (jwtService.isTokenValid(token)) {
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails,
-                                null,
-                                userDetails.getAuthorities()
-                        );
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+                if (jwtService.isTokenValid(token)) {
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(
+                                    userDetails,
+                                    null,
+                                    userDetails.getAuthorities()
+                            );
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
             }
+        } catch (Exception e) {
+            // Si el token es inválido, expirado o mal formado, lo ignoramos.
+            // El usuario simplemente no estará autenticado para este request.
         }
 
         filterChain.doFilter(request, response);
